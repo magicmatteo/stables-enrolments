@@ -2,14 +2,21 @@
 
     {% block content %}
 
-        <h1> List of dogs</h1>
+        <h1> List of Students</h1>
         
-        {% for dog in dogs %}
-        
-            <h3>Name: {{ dog.name }}</h3>
-            <p>Colour: {{ dog.colour }}</p>
-            <p>Age: {{ dog.age }}</p>
-    
+        {% for student in students %}
+        <div class='content-section'>
+            <div>
+                <h3>Name: {{ student.givenname }} {{ student.surname }}</h3>
+                <p>Middle name: {{ student.givenname2 }}</p>
+                <p>Date of Birth: {{ student.dob }}</p>
+                <p>Parent: {{ student.parent.email }}</p>
+            </div>
+            <div>
+                
+            </div>
+            
+        </div>
         {% endfor %}
-
+        
 {% endblock %}
