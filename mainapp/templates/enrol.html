@@ -5,21 +5,58 @@
     <h1>Enrol Page</h1>
     
     <div class="content-section">
-        <form method="POST" action="">
+        <form method="POST" action="" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4"> Enrol Now</legend>
                 <div class="form-group mb-4">
                     {{ form.studentfirstname.label(class="form-control-label mb-1") }}
-                    {{ form.studentfirstname(class="form-control form-control-lg") }}
+                    {% if form.studentfirstname.errors %}
+                        {{ form.studentfirstname(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.studentfirstname.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.studentfirstname(class="form-control form-control-lg") }}
+                    {% endif %}
+                    
                 </div>
                 <div class="form-group mb-4">
                     {{ form.studentsurname.label(class="form-control-label mb-1") }}
-                    {{ form.studentsurname(class="form-control form-control-lg") }}
+                    {% if form.studentsurname.errors %}
+                        {{ form.studentsurname(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.studentsurname.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.studentsurname(class="form-control form-control-lg") }}
+                    {% endif %}
                 </div>
                 <div class="form-group mb-4">
                     {{ form.studentdob.label(class="form-control-label mb-1") }}
-                    {{ form.studentdob(class="form-control form-control-lg") }}
+                    {% if form.studentdob.errors %}
+                        {{ form.studentdob(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.studentdob.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.studentdob(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group mb-4">
+                    {{ form.birth_cert.label() }}
+                    {{ form.birth_cert(class='form-control-file') }}
+                    {% if form.birth_cert.errors %}
+                        {% for error in form.birth_cert.errors %}
+                        <span class='text-danger'>{{ error }}</span></br>
+                        {% endfor %}
+                    {% endif %}
                 </div>
                 <div class="form-group">
                     {{ form.submit(class="btn btn-outline-info")}}
