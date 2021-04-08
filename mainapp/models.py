@@ -13,18 +13,26 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(120), unique=True, nullable=False)
     date_created = db.Column(db.DateTime, nullable=False)
-    children = db.relationship('Student', backref='parent', lazy=True)
+    children = db.relationship('Child', backref='parent', lazy=True)
 
     def __repr__(self):
         return f"User({self.email})"
 
-class Student(db.Model):
+class Child(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    givenname = db.Column(db.String(20), nullable=False)
-    givenname2 = db.Column(db.String(30), nullable=True)
-    surname = db.Column(db.String(20), nullable=False)
+    preferred_name = db.Column(db.String(20), nullable=False)
+    given_names = db.Column(db.String(40), nullable=False)
+    family_name = db.Column(db.String(20), nullable=False)
     dob = db.Column(db.Date, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    #gender = db.Column(db.String(15), nullable=False)
+
+    # Child Address
+    street = db.Column(db.String(40), nullable=True)
+
+    birth_cert = db.Column(db.String(60), nullable=False)
+    date_created = db.Column(db.DateTime, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)   
+
 
     def __repr__(self):
-        return f"Student({self.givenname} {self.surname})"
+        return f"Child({self.givenname} {self.surname})"

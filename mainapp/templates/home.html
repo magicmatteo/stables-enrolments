@@ -2,15 +2,14 @@
 
     {% block content %}
 
-        <h1> List of Students</h1>
+        <h1> List of Children</h1>
         
-        {% for student in students %}
+        {% for child in children %}
         <div class='content-section'>
             <div>
-                <h3>Name: {{ student.givenname }} {{ student.surname }}</h3>
-                <p>Middle name: {{ student.givenname2 }}</p>
-                <p>Date of Birth: {{ student.dob }}</p>
-                <p>Parent: {{ student.parent.email }}</p>
+                <h3>Name: {{ child.preferred_name }} {{ child.family_name }}</h3>
+                <p>Date of Birth: {{ child.dob }}</p>
+                <p>Parent: {{ child.parent.email }}</p>
             </div>
             <div>
                 

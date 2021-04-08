@@ -1,7 +1,8 @@
 from mainapp import app, bcrypt, db
 from flask import render_template, url_for, flash, redirect, request
 from mainapp.forms import EnrolmentForm, LoginForm, RegisterForm
-from mainapp.models import User, Student
+from mainapp.models import User, Child
+from mainapp.files import save_birth_cert, update_file_name
 from datetime import datetime
 from flask_login import login_user, current_user, logout_user, login_required
 
@@ -9,8 +10,8 @@ from flask_login import login_user, current_user, logout_user, login_required
 
 @app.route('/')
 def home():
-    students = Student.query.all()
-    return render_template('home.html', students=students)
+    children = Child.query.all()
+    return render_template('home.html', children=children)
 
 @app.route('/about')
 def about():
@@ -21,6 +22,21 @@ def about():
 def enrol():
     form = EnrolmentForm()
     if form.validate_on_submit():
+        child = Child(  given_names=form.child_given_names.data,
+                        preferred_name=form.child_preferred_name.data,
+                        family_name=form.child_family_name.data, 
+                        dob=form.child_dob.data,
+                        street=form.child_street.data,
+                        birth_cert=form.birth_cert.data.filename,
+                        user_id=current_user.get_id(),
+                        date_created=datetime.now())
+        
+        ## Add child to get primary key to use in file name - then flush and re-add
+        update_file_name(child, form.birth_cert.data)
+        
+        db.session.add(child)
+        db.session.commit()
+        
         flash('Successfully submitted', 'success')
         return redirect(url_for('home'))
     return render_template('enrol.html', title='Enrol', form=form)

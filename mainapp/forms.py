@@ -1,15 +1,22 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired, FileAllowed
-from wtforms import StringField, DateField, SubmitField, PasswordField
+from wtforms import StringField, DateField, SubmitField, PasswordField, SelectField
 from wtforms.validators import DataRequired, Length, Email
 
 class EnrolmentForm(FlaskForm):
-    studentfirstname = StringField('Student First Name', 
+    child_given_names = StringField('Given Names', 
+                                    validators=[DataRequired(), Length(min=2, max=40)])
+    child_preferred_name = StringField('Preferred Name', 
                                     validators=[DataRequired(), Length(min=2, max=20)])
-    studentsurname = StringField('Student Surname', 
+    child_family_name = StringField('Family Name', 
                                     validators=[DataRequired(), Length(min=2, max=20)])
-    studentdob = DateField('Student Date of Birth (Format dd-mm-yyyy)', format='%d-%m-%Y')
-    birth_cert = FileField('Upload birth certificate', validators=[FileAllowed(['jpg', 'pdf'])])
+    child_dob = DateField('Date of Birth (Format dd-mm-yyyy)', format='%d-%m-%Y')
+    #child_gender = SelectField('Gender', choices=[('male', 'Male'), ('female', 'Female'), ('not disclosed', 'Not Disclosed')])
+    child_street = StringField('No. & Street', 
+                                    validators=[DataRequired(), Length(min=2, max=60)])
+
+    
+    birth_cert = FileField('Upload birth certificate', validators=[FileRequired(), FileAllowed(['jpg', 'pdf'])])
 
     submit = SubmitField('Submit')
 
