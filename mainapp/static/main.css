@@ -80,9 +80,23 @@ body {
   }
 
 
-   /* The Modal (background) */
-
-   .col-form-label{
-      font-weight:bolder
-        
-   }
+    .alert-custom { 
+      position:relative;
+      padding:1rem 1rem;
+      margin-bottom:1rem;
+      border:1px solid transparent;
+      border-radius:.25rem;
+      color:#055160;
+      background-color:#cff4fc;
+      border-color:#b6effb;
+                }
+    .upload {
+      position:relative;
+      padding:1rem 1rem;
+      margin-bottom:1rem;
+      border:1px solid transparent;
+      border-radius:.25rem;
+      color:#403e42;
+      background-color:#cee4e9;
+      border-color:#d1eff5;
+    }            

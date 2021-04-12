@@ -1,5 +1,8 @@
-{% from 'macros.html' import render_field %}
+{% from 'macros.html' import    render_field, render_field_file, render_field_dropdown, 
+                                render_field_checkbox %}
+
 {% extends "base.html" %}
+
 
 {% block content %}
 
@@ -9,90 +12,49 @@
         <form method="POST" action="" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
-                <legend class="border-bottom mb-4"> CHILD INFORMATION</legend>
-                <div class="row mb-2">
-                    <!-- <div class="form-group col-md-6 mb-2">
-                        {{ form.child_family_name.label(class="form-control-label mb-1") }}
-                        {% if form.child_family_name.errors %}
-                            {{ form.child_family_name(class="form-control form-control-md is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.child_family_name.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ form.child_family_name(class="form-control form-control-md") }}
-                        {% endif %}
-                    </div> -->
+                <div class='row'>
+                    <legend class="border-bottom mb-4"> CHILD INFORMATION</legend>
+                    <div class='col-md-6 mb-4'>
+                        {{ render_field(form.child_family_name) }}    
+                        {{ render_field(form.child_given_names) }}
+                        {{ render_field(form.child_preferred_name) }}
+                    </div>
+                    <div class='col-md-6 mb-4'>
+                        {{ render_field(form.child_dob) }}
+                        {{ render_field_dropdown(form.child_gender) }}
+                    </div>
+                    <legend class="border-bottom mb-4"> CHILD ADDRESS</legend>
+                    <div class='col-md-6 mb-4'>
+                        {{ render_field(form.child_street) }}
+                        {{ render_field(form.child_suburb) }}
+                        <div class="row mb-2">
+                            {{ render_field(form.child_state, width='col-md-6') }}
+                            {{ render_field(form.child_postcode, width='col-md-6') }}
+                        </div>
+                    </div>
+                    <div class='col-md-6 mb-4'>
+                        <div class="alert-custom">
+                            <p class='mb-0'>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
+                        </div>  
+                    </div>
+                    <hr>
+                    <div class='col-md-6 mb-4'>
+                        <p> Is the child one of the following. </p>
+                    </div>
+                    <div class='col-md-6 mb-4'>
+                        {{ render_field(form.child_torres_strait) }}
+                        {{ render_field(form.child_aboriginal) }}
+                    </div>
                     
 
-                    {{ render_field(form.child_family_name, width='col-md-6') }}
-                    {{ render_field(form.child_dob, width='col-md-6') }}
-                    <!-- <div class="form-group col-md-6 mb-2">
-                        {{ form.child_dob.label(class="form-control-label mb-1") }}
-                        {% if form.child_dob.errors %}
-                            {{ form.child_dob(class="form-control form-control-md is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.child_dob.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ form.child_dob(class="form-control form-control-md") }}
-                        {% endif %}
-                    </div> -->
-                </div>
-                <div class="form-group mb-2">
-                    {{ form.child_given_names.label(class="form-control-label mb-1") }}
-                    {% if form.child_given_names.errors %}
-                        {{ form.child_given_names(class="form-control form-control-md is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for error in form.child_given_names.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ form.child_given_names(class="form-control form-control-md") }}
-                    {% endif %}
-                </div>
-                <div class="form-group mb-2">
-                    {{ form.child_preferred_name.label(class="form-control-label mb-1") }}
-                    {% if form.child_preferred_name.errors %}
-                        {{ form.child_preferred_name(class="form-control form-control-md is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for error in form.child_preferred_name.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ form.child_preferred_name(class="form-control form-control-md") }}
-                    {% endif %}
-                </div>
-                <legend class="border-bottom mb-4"> CHILD ADDRESS</legend>
-                <div class="form-group mb-2">
-                    {{ form.child_street.label(class="form-control-label mb-1") }}
-                    {% if form.child_street.errors %}
-                        {{ form.child_street(class="form-control form-control-md is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for error in form.child_street.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ form.child_street(class="form-control form-control-md") }}
-                    {% endif %}
-                </div>
-                <div class="form-group mb-2">
-                    {{ form.birth_cert.label() }}
-                    {{ form.birth_cert(class='form-control-file') }}
-                    {% if form.birth_cert.errors %}
-                        {% for error in form.birth_cert.errors %}
-                        <span class='text-danger'>{{ error }}</span></br>
-                        {% endfor %}
-                    {% endif %}
-                </div>
-                <div class="form-group">
-                    {{ form.submit(class="btn btn-outline-info")}}
+
+                    <div class="form-group upload col-md-6 mb-4">
+                        {{ render_field_file(form.birth_cert) }}
+                    </div>
+                    <div class="form-group mb-4">
+                        {{ form.submit(class="btn btn-outline-info")}}
+                    </div>
+
                 </div>
             </fieldset>
         </form>

@@ -24,12 +24,21 @@ class Child(db.Model):
     given_names = db.Column(db.String(40), nullable=False)
     family_name = db.Column(db.String(20), nullable=False)
     dob = db.Column(db.Date, nullable=False)
-    #gender = db.Column(db.String(15), nullable=False)
+    gender = db.Column(db.String(15), nullable=False)
 
     # Child Address
-    street = db.Column(db.String(40), nullable=True)
+    street = db.Column(db.String(60), nullable=False)
+    suburb = db.Column(db.String(30), nullable=False)
+    state = db.Column(db.String(10), nullable=False)
+    postcode = db.Column(db.String(4), nullable=False)
 
+    torres_strait = db.Column(db.Boolean, nullable=False)
+    aboriginal = db.Column(db.Boolean, nullable=False)
+
+    # File uploads
     birth_cert = db.Column(db.String(60), nullable=False)
+    
+    # Metadata
     date_created = db.Column(db.DateTime, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)   
 

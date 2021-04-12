@@ -1,4 +1,5 @@
 
+<!-- For standard string input fields -->
 {% macro render_field(field, width=null, mb='mb-2') %}
     <div class="form-group {{width}} {{mb}}">
         {{ field.label(class="form-control-label mb-1") }}
@@ -11,6 +12,54 @@
             </div>
         {% else %}
             {{ field(class="form-control form-control-md") }}
+        {% endif %}
+    </div>
+{% endmacro %}
+
+
+<!-- For file upload fields -->
+{% macro render_field_file(field, width=null) %}
+    <div class="form-group {{width}} {{mb}}">
+        {{ field.label() }}
+        {{ field(class='form-control-file') }}
+        {% if field.errors %}
+            {% for error in field.errors %}
+            <span class='text-danger'>{{ error }}</span></br>
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endmacro %}
+
+<!-- For dropdown fields -->
+{% macro render_field_dropdown(field, width=null, mb='mb-2') %}
+    <div class="form-group {{width}} {{mb}}">
+        {{ field.label(class="form-control-label mb-1") }}
+        {% if field.errors %}
+            {{ field(class="form-control form-control-md is-invalid") }}
+            <div class="invalid-feedback">
+                {% for error in field.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+        {% else %}
+            {{ field(class="form-control") }}
+        {% endif %}
+    </div>
+{% endmacro %}
+
+<!-- For checkbox fields -->
+{% macro render_field_checkbox(field, width=null, mb=null) %}
+    <div class="form-check {{width}} {{mb}}">
+        {{ field.label(class="form-check-label mb-1") }}
+        {% if field.errors %}
+            {{ field(class="form-check-input is-invalid") }}
+            <div class="invalid-feedback">
+                {% for error in field.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+        {% else %}
+            {{ field(class="form-check-input") }}
         {% endif %}
     </div>
 {% endmacro %}

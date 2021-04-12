@@ -10,7 +10,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 
 @app.route('/')
 def home():
-    children = Child.query.all()
+    children = Child.query.filter_by(user_id=current_user.get_id())
     return render_template('home.html', children=children)
 
 @app.route('/about')
@@ -26,7 +26,13 @@ def enrol():
                         preferred_name=form.child_preferred_name.data,
                         family_name=form.child_family_name.data, 
                         dob=form.child_dob.data,
+                        gender=form.child_gender.data,
                         street=form.child_street.data,
+                        suburb=form.child_suburb.data,
+                        state=form.child_state.data,
+                        postcode=form.child_postcode.data,
+                        torres_strait=form.child_torres_strait.data,
+                        aboriginal=form.child_aboriginal.data,
                         birth_cert=form.birth_cert.data.filename,
                         user_id=current_user.get_id(),
                         date_created=datetime.now())
@@ -66,7 +72,7 @@ def register():
                 user_exist = User.query.filter_by(email=form.email.data).first()
                 if not user_exist:
                     hashed_pw = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-                    user = User(firstname=form.givenname.data, 
+                    user = User(firstname=form.given_name.data, 
                                 surname=form.surname.data, 
                                 email=form.email.data, password=hashed_pw,
                                 date_created=datetime.now())
