@@ -1,5 +1,7 @@
 venv/
 
+mainapp/static/birth_certs/
+
 *__pycache__
 
 mainapp/site.db

@@ -5,6 +5,7 @@ from mainapp.models import User, Child
 from mainapp.files import save_birth_cert, update_file_name
 from datetime import datetime
 from flask_login import login_user, current_user, logout_user, login_required
+import jsonify
 
 
 
@@ -102,3 +103,11 @@ def logout():
 def account():
     user = User.query.get(current_user.get_id())
     return render_template('account.html', title='Account', user=user)
+
+@app.route('/api/v1/resources/children/all')
+def api_child_all():
+    children = {}
+    c = Child.query.all()
+    for x in c:
+        children[x.id] = x.as_dict()
+    return children

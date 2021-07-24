@@ -14,6 +14,7 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(120), unique=True, nullable=False)
     date_created = db.Column(db.DateTime, nullable=False)
     children = db.relationship('Child', backref='parent', lazy=True)
+    
 
     def __repr__(self):
         return f"User({self.email})"
@@ -42,6 +43,8 @@ class Child(db.Model):
     date_created = db.Column(db.DateTime, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)   
 
+    def as_dict(self):
+       return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
     def __repr__(self):
         return f"Child({self.givenname} {self.surname})"
