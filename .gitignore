@@ -5,3 +5,5 @@ mainapp/static/birth_certs/
 *__pycache__
 
 mainapp/site.db
+
+mainapp/config/database.ini

@@ -3,18 +3,28 @@
     {% block content %}
 
         <h1> List of Children</h1>
-        
+                
         {% for child in children %}
         <div class='content-section'>
-            <div>
-                <h3>Name: {{ child.preferred_name }} {{ child.family_name }}</h3>
-                <p>Date of Birth: {{ child.dob }}</p>
-                <p>Parent: {{ child.parent.email }}</p>
+            <div class='row col-md-6'>
+                <div class='row'>
+                    <div class='col-md-8'>
+                        <h3>Name: {{ child.preferred_name }} {{ child.family_name }}</h3>
+                        <p>Date of Birth: {{ child.dob }}</p>
+                        <p>Parent: {{ child.parent.email }}</p>
+                    </div>
+                    <div class='col-md-4'>
+                        <div class='mb-4'>
+                            <a href={{url_for('api_details_child', id=child.id)}} class="btn btn-primary">Details</a>
+                        </div>
+                        <div class='mb-4'>
+                            <form action={{url_for('api_delete_child', id=child.id)}} method='POST'>
+                                <button type='submit' class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div>
-                
-            </div>
-            
         </div>
         {% endfor %}
         

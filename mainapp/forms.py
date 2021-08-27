@@ -24,9 +24,7 @@ class EnrolmentForm(FlaskForm):
     child_torres_strait = BooleanField('Torres Strait Islander')
     child_aboriginal = BooleanField('Aboriginal')
 
-
-    
-    birth_cert = FileField('Upload birth certificate', validators=[FileRequired(), FileAllowed(['jpg', 'pdf'])])
+    birth_cert = FileField('Upload birth certificate', validators=[FileAllowed(['jpg', 'pdf'])])
 
     submit = SubmitField('Submit')
 

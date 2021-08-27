@@ -1,12 +1,12 @@
 from mainapp import app, bcrypt, db
-from flask import render_template, url_for, flash, redirect, request
+from flask import render_template, url_for, flash, redirect, request, abort, jsonify
 from mainapp.forms import EnrolmentForm, LoginForm, RegisterForm
 from mainapp.models import User, Child
-from mainapp.files import save_birth_cert, update_file_name
+from mainapp.files import update_file_name
 from datetime import datetime
 from flask_login import login_user, current_user, logout_user, login_required
-import jsonify
-
+from mainapp.config import config
+import psycopg2
 
 
 @app.route('/')
@@ -34,12 +34,15 @@ def enrol():
                         postcode=form.child_postcode.data,
                         torres_strait=form.child_torres_strait.data,
                         aboriginal=form.child_aboriginal.data,
-                        birth_cert=form.birth_cert.data.filename,
+                        birth_cert=form.birth_cert.data,
                         user_id=current_user.get_id(),
                         date_created=datetime.now())
         
         ## Add child to get primary key to use in file name - then flush and re-add
-        update_file_name(child, form.birth_cert.data)
+        if form.birth_cert.data:
+            update_file_name(child, form.birth_cert.data)
+        else:
+            child.birth_cert = None
         
         db.session.add(child)
         db.session.commit()
@@ -47,6 +50,53 @@ def enrol():
         flash('Successfully submitted', 'success')
         return redirect(url_for('home'))
     return render_template('enrol.html', title='Enrol', form=form)
+
+@app.route('/sql', methods=['GET', 'POST'])
+@login_required
+def sql():
+    """ Connect to the PostgreSQL database server """
+    conn = None
+    try:
+        # read connection parameters
+        params = config()
+        print(params)
+        # connect to the PostgreSQL server
+        print('Connecting to the PostgreSQL database...')
+        conn = psycopg2.connect(**params)
+		
+        # create a cursor
+        cur = conn.cursor()
+        
+	# execute a statement
+        cur.execute('SELECT * FROM child')
+
+        # display the PostgreSQL database server version
+        children = cur.fetchall()
+        columns = cur.description
+        colnames = [col[0] for col in columns]
+        print(colnames)
+
+        children_list = []
+            
+        for child in children:
+            n = {}
+            for x, y in zip(child, colnames):
+                n[y] = x
+            children_list.append(n)
+
+        cur.close()
+        
+        return render_template('sql.html', title='SQL - No ORM', db_version=children_list)
+
+       
+	# close the communication with the PostgreSQL
+        
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print('Database connection closed.')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -111,3 +161,58 @@ def api_child_all():
     for x in c:
         children[x.id] = x.as_dict()
     return children
+
+@app.route('/api/v1/resources/children/add', methods=['POST'])
+def api_add_child():
+    if not request.json:
+        abort(400)
+    
+    # if not current_user.is_authenticated:
+    #     return ('Not logged in', 401)
+
+    child = Child(  preferred_name = request.json['preferred_name'],
+                    given_names = request.json['given_names'],
+                    family_name = request.json['family_name'],
+                    dob = datetime.strptime(request.json['dob'], '%d-%m-%Y').date(),
+                    gender = request.json['gender'],
+                    street = request.json['street'],
+                    suburb = request.json['suburb'],
+                    state = request.json['state'],
+                    postcode = request.json['postcode'],
+                    torres_strait = request.json['torres_strait'],
+                    aboriginal = request.json['aboriginal'],
+                    birth_cert = None,
+                    date_created = datetime.now(),
+                    user_id = request.json['user_id']
+                    )
+    parent = User.query.get(child.user_id)
+    db.session.add(child)
+    db.session.commit()
+    return jsonify({'Name': child.given_names + ' ' + child.family_name,
+                    'Time Created': child.date_created,
+                    'Parent': parent.email }), 201
+
+@app.route('/api/v1/resources/children/delete/<int:id>', methods=['POST'])
+def api_delete_child(id):
+    c = Child.query.get(id)
+    if c:
+        try:
+            db.session.delete(c)
+            db.session.commit()
+            flash("User deleted successfully", 'info')
+            # children = Child.query.filter_by(user_id=current_user.get_id())
+            # return (render_template('home.html', children=children), 201)
+            return redirect(url_for('home'))
+        except:
+            flash('Error - please contact administrator', 'danger')
+            return redirect(url_for('home'))
+    
+    flash('Resource not found - please contact administrator', 'danger')
+    return redirect(url_for('home'))
+
+@app.route('/api/v1/resources/children/details/<int:id>', methods=['GET'])
+def api_details_child(id):
+    c = Child.query.get(id)
+    if c:
+        return (c.as_dict(), 200)
+    return ('Error 404 - Resource not found in the database', 404)

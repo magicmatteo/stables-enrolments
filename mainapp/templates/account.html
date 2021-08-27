@@ -4,9 +4,11 @@
 
 {% block content %}
 
-    <h1> This is the account page</h1>
+    <h1>Account Page</h1>
     <div class="content-section">
-        <p>Logged in as - {{ user.firstname }} {{ user.surname }}</p>
+        <p> Logged in as - {{ user.firstname }} {{ user.surname }}<br>
+            Created on - {{ user.date_created }}
+        </p>
     </div>
         
     

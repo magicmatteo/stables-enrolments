@@ -37,7 +37,7 @@ class Child(db.Model):
     aboriginal = db.Column(db.Boolean, nullable=False)
 
     # File uploads
-    birth_cert = db.Column(db.String(60), nullable=False)
+    birth_cert = db.Column(db.String(255), nullable=True)
     
     # Metadata
     date_created = db.Column(db.DateTime, nullable=False)
