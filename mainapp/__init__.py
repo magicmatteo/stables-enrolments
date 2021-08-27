@@ -2,10 +2,11 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
-from mainapp.config import db_uri
+
 
 app = Flask(__name__)
 
+from mainapp.config import db_uri
 app.config['SECRET_KEY'] = '0f7b41806d2184aa62aaec6586dcfb7816e64a63755b57002230851e9db67275'
 app.config['SQLALCHEMY_DATABASE_URI'] = db_uri()
 app.config['SESSION_PROTECTION'] = 'strong' # for flask-login security 
