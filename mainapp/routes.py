@@ -59,7 +59,6 @@ def sql():
     try:
         # read connection parameters
         params = config()
-        print(params)
         # connect to the PostgreSQL server
         print('Connecting to the PostgreSQL database...')
         conn = psycopg2.connect(**params)
