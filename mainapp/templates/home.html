@@ -15,7 +15,9 @@
                     </div>
                     <div class='col-md-4'>
                         <div class='mb-4'>
-                            <a href={{url_for('api_details_child', id=child.id)}} class="btn btn-primary">Details</a>
+                            <button type="button" onclick="makeCall('{{ child.id }}')" class="btn btn-primary">
+                                Details
+                            </button>
                         </div>
                         <div class='mb-4'>
                             <form action={{url_for('api_delete_child', id=child.id)}} method='POST'>
@@ -26,6 +28,56 @@
                 </div>
             </div>
         </div>
-        {% endfor %}
+
         
+        
+        {% endfor %}
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="myModalTitle">Modal title</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                ...
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <a href="{{url_for('about')}}" class="btn btn-primary">View Page</a>
+                </div>
+            </div>
+            </div>
+        </div>
+
+{% endblock %}
+
+{% block script %}
+<script>
+
+    function makeCall(id) {
+        $.ajax({
+                url: 'http://127.0.0.1:5000/api/v1/resources/children/details/' + id,
+                type: 'GET',
+                dataType: 'json',
+                success: function (result) {
+                    var modal = $("#myModal");
+                    $("#myModalTitle").text(result.given_names);
+                },
+                error: function (error) {
+                    var modal = $("#myModal");
+                    modal.html("<h4>Could not find record in DB</h4>");
+                    console.log(error);
+                }
+            });
+            $('#myModal').modal('show')
+
+    }
+
+</script>
+
 {% endblock %}
