@@ -34,7 +34,7 @@ def enrol():
                         postcode=form.child_postcode.data,
                         torres_strait=form.child_torres_strait.data,
                         aboriginal=form.child_aboriginal.data,
-                        birth_cert=form.birth_cert.data,
+                        birth_cert=form.birth_cert.data.filename,
                         user_id=current_user.get_id(),
                         date_created=datetime.now())
         
