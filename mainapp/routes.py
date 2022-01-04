@@ -5,7 +5,6 @@ from mainapp.models import User, Child
 from mainapp.files import update_file_name
 from datetime import datetime
 from flask_login import login_user, current_user, logout_user, login_required
-from mainapp.config import config
 import psycopg2
 
 
