@@ -16,20 +16,6 @@
     </div>
 {% endmacro %}
 
-
-<!-- For file upload fields -->
-{% macro render_field_file(field, width=null) %}
-    <div class="form-group {{width}} {{mb}}">
-        {{ field.label() }}
-        {{ field(class='form-control-file') }}
-        {% if field.errors %}
-            {% for error in field.errors %}
-            <span class='text-danger'>{{ error }}</span></br>
-            {% endfor %}
-        {% endif %}
-    </div>
-{% endmacro %}
-
 <!-- For dropdown fields -->
 {% macro render_field_dropdown(field, width=null, mb='mb-2') %}
     <div class="form-group {{width}} {{mb}}">

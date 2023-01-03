@@ -18,7 +18,7 @@ login_manager.login_message = 'Please log in to view this page'
 login_manager.login_message_category = 'info'
 
 db = SQLAlchemy(app)
-from mainapp.models import User, Child
+from mainapp.models import User
 db.create_all()
 bcrypt = Bcrypt(app)
 
